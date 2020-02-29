@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:background="#fff"
+    android:id="@+id/card"
+    app:cardCornerRadius="0dp"
+    android:layout_marginTop="3dp"
+
+
+    >
+
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:id="@+id/item_container"
+
+
+            >
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_gravity="center"
+                android:gravity="center"
+
+                >
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:src="@drawable/test"
+                    android:layout_margin="10dp"
+                    android:layout_gravity="center"
+                    android:id="@+id/user_img"
+
+
+
+                    />
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_gravity="center"
+
+                    >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Ahmed Mostafa"
+                        android:textSize="17dp"
+                        android:textColor="#000"
+                        android:id="@+id/user_name"
+
+
+                        />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Android Developer"
+                        android:textSize="16dp"
+                        android:id="@+id/user_title"
+
+                        />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="8hrs"
+                        android:id="@+id/post_date"
+
+                        />
+
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#000"
+                android:layout_margin="10dp"
+                android:text="hello every one i am new to this amazing social app
+i wish find this app great !"
+
+                android:id="@+id/post_desc"
+
+                />
+
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="10dp"
+                android:id="@+id/post_img"
+
+                />
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:text="105 likes . 31 comments . 112 views"
+                android:id="@+id/post_likes_comments"
+
+                />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#6c6a6a"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:id="@+id/separator"
+                android:orientation="vertical"
+
+                >
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+
+
+                >
+
+                <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawableLeft="@drawable/ic_like"
+                    android:text="Like"
+                    android:textAllCaps="false"
+                    android:layout_weight="1"
+                    android:background="@null"
+                    android:id="@+id/btn_like"
+                    android:paddingLeft="10dp"
+
+                    />
+
+
+                <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawableLeft="@drawable/ic_comment"
+                    android:text="Comment"
+                    android:textAllCaps="false"
+                    android:layout_weight="1"
+                    android:background="@null"
+                    android:id="@+id/btn_comment"
+                    android:paddingLeft="10dp"
+
+                    />
+
+
+                <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawableLeft="@drawable/ic_share_gray"
+                    android:text="Share"
+                    android:textAllCaps="false"
+                    android:layout_weight="1"
+                    android:background="@null"
+                    android:id="@+id/btn_share"
+                    android:paddingLeft="10dp"
+
+                    />
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="#9c9999"
+                android:visibility="gone"
+                android:id="@+id/comment_layout"
+
+                >
+
+                <include
+
+                    layout="@layout/item_comment"
+
+                    />
+
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+
+
+
+</android.support.v7.widget.CardView>

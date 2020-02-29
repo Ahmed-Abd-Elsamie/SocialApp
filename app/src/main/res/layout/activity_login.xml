@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".ui.Login"
+    android:background="@drawable/bg1"
+    android:layout_gravity="center"
+    android:gravity="center"
+
+
+    >
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:layout_gravity="center"
+
+        >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:layout_gravity="center"
+
+            >
+
+
+
+
+
+    <ProgressBar
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:id="@+id/prog_login"
+        android:visibility="gone"
+
+        />
+
+
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:layout_marginTop="10dp"
+
+        >
+
+
+        <android.support.design.widget.TextInputEditText
+            android:padding="10dp"
+            android:id="@+id/txt_user_email_login"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Email"
+            android:layout_gravity="center"
+            android:layout_marginRight="20dp"
+            android:textSize="20sp"
+            android:layout_marginLeft="20dp"
+            android:inputType="textEmailAddress"
+            android:textColorHint="#71d9e9"
+
+
+            />
+
+
+        <android.support.design.widget.TextInputEditText
+            android:id="@+id/txt_user_password_login"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Password"
+            android:padding="10dp"
+            android:layout_gravity="center"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:textSize="20sp"
+            android:inputType="textPassword"
+            android:layout_marginTop="18dp"
+            android:textColorHint="#71d9e9"
+
+
+            />
+
+
+
+    </LinearLayout>
+
+
+
+    <Button
+        android:id="@+id/login_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginRight="20dp"
+        android:layout_marginLeft="20dp"
+        android:background="@drawable/btn_design2"
+        android:gravity="center"
+        android:text="SIGN IN"
+        android:textAllCaps="false"
+        android:textColor="#fff"
+        android:layout_marginTop="20dp"
+        android:textSize="20dp"
+
+        />
+
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="15dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+
+
+        >
+
+
+
+        <Button
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:textColor="#fff"
+            android:text="FORGOT PASSWORD?"
+            android:layout_gravity="left"
+            android:layout_weight="1"
+            android:gravity="left"
+            android:paddingTop="10dp"
+            android:paddingLeft="10dp"
+            android:textSize="16dp"
+
+            />
+
+
+        <Button
+
+            android:id="@+id/registerButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="@null"
+            android:gravity="right"
+            android:paddingTop="10dp"
+            android:text="JOIN NOW"
+            android:textAllCaps="false"
+            android:textColor="#fff"
+            android:layout_weight="1"
+            android:paddingRight="10dp"
+            android:textSize="16dp"
+
+
+            />
+
+
+
+    </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
+
+
+</LinearLayout>

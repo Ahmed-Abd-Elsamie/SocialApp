@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.root.socialapp.MainActivity"
+
+
+    >
+
+
+<android.support.v7.widget.CardView
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/colorPrimary"
+    android:id="@+id/search_card"
+    app:cardCornerRadius="0dp"
+
+    >
+
+
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:background="@color/colorPrimary"
+
+        >
+
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:background="@drawable/ic_profile_btn"
+            app:civ_border_color="#fff"
+            app:civ_border_width="2dp"
+            android:layout_marginLeft="10dp"
+            android:id="@+id/btn_profile"
+
+            />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_weight="1"
+
+
+            >
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:id="@+id/btn_search"
+                android:layout_marginLeft="7dp"
+                android:layout_marginRight="7dp"
+                android:textAllCaps="false"
+                android:layout_gravity="center"
+                android:hint="Search"
+                android:background="@drawable/input_text"
+                android:paddingLeft="10dp"
+                android:drawableLeft="@drawable/ic_search"
+
+
+                />
+
+        </LinearLayout>
+
+        <ImageButton
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:background="@drawable/ic_more"
+            android:layout_marginRight="10dp"
+
+            />
+
+
+    </LinearLayout>
+
+</android.support.v7.widget.CardView>
+
+
+    <android.support.v7.widget.CardView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/tabs_card"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        app:cardCornerRadius="15dp"
+        app:cardBackgroundColor="#c9c9c9"
+        android:layout_marginBottom="5dp"
+
+
+        >
+
+
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:padding="5dp"
+
+
+        >
+
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/ic_home_click"
+            android:layout_weight="1"
+            android:id="@+id/btn_home"
+            android:layout_margin="5dp"
+
+            />
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/ic_people"
+            android:layout_weight="1"
+            android:id="@+id/btn_people"
+            android:layout_margin="5dp"
+
+
+            />
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/ic_messaging"
+            android:textColor="@color/colorPrimaryDark"
+            android:textAllCaps="false"
+            android:layout_weight="1"
+            android:id="@+id/btn_messaging"
+            android:layout_margin="5dp"
+
+            />
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/ic_notification"
+            android:textColor="@color/colorPrimaryDark"
+            android:textAllCaps="false"
+            android:layout_weight="1"
+            android:id="@+id/btn_notifications"
+            android:layout_margin="5dp"
+
+
+            />
+
+
+
+
+    </LinearLayout>
+
+    </android.support.v7.widget.CardView>
+
+    <android.support.v4.view.ViewPager
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/main_pager"
+        android:layout_below="@+id/search_card"
+
+
+
+        >
+
+
+
+
+    </android.support.v4.view.ViewPager>
+
+
+
+</RelativeLayout>

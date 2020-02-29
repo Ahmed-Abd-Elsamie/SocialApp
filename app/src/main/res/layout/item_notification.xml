@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardCornerRadius="0dp"
+    android:layout_marginTop="3dp"
+    android:id="@+id/notify_item_card"
+
+
+    >
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+
+        >
+
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:layout_width="65dp"
+            android:layout_height="65dp"
+            android:src="@drawable/test"
+            android:layout_margin="10dp"
+            android:id="@+id/item_notify_img"
+
+
+
+            />
+
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+
+            >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Ahmed Mostafa"
+                android:textColor="#000"
+                android:textStyle="bold"
+                android:textSize="17dp"
+                android:id="@+id/item_notify_name"
+
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Sent you a friend Request"
+                android:textColor="#686464"
+                android:textSize="14dp"
+                android:id="@+id/item_notify_title"
+
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Egypt"
+                android:textColor="#686464"
+                android:textSize="14dp"
+                android:id="@+id/item_notify_country"
+
+                />
+
+        </LinearLayout>
+
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="10dp"
+            android:id="@+id/btn_accept_friend"
+            android:text="ACCEPT"
+            android:background="@drawable/btn_accept"
+
+
+            />
+
+
+
+
+    </LinearLayout>
+
+</android.support.v7.widget.CardView>

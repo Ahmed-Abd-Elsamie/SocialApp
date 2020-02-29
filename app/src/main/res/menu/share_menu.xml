@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:title="Whatsapp"
+        app:showAsAction="withText"
+        android:icon="@drawable/ic_share"
+        android:id="@+id/menu_whatsapp"
+
+        >
+
+    </item>
+
+    <item
+        android:title="Facebook"
+        app:showAsAction="withText"
+        android:icon="@drawable/ic_share"
+        android:id="@+id/menu_facebook"
+
+        >
+
+    </item>
+
+    <item
+        android:title="Tweeter"
+        app:showAsAction="withText"
+        android:icon="@drawable/ic_share"
+        android:id="@+id/menu_tweeter"
+
+        >
+
+    </item>
+
+
+
+</menu>

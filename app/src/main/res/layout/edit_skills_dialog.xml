@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:layout_gravity="center"
+    android:gravity="center"
+    android:background="@drawable/skill_add_dialog_bg"
+    android:padding="20dp"
+
+
+    >
+
+    <ProgressBar
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/prog_add_skill"
+        android:layout_margin="10dp"
+        android:visibility="gone"
+
+
+        />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="20dp"
+        android:layout_marginLeft="20dp"
+        android:background="@drawable/input_text1"
+        android:padding="8dp"
+        android:hint="Enter a Skill"
+        android:id="@+id/txt_add_skill"
+        android:textColor="#fff"
+        android:textColorHint="#cac8c8"
+
+        />
+
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/btn_add_skill"
+        android:layout_margin="7dp"
+        android:text="ADD"
+        android:textColor="@color/colorPrimaryDark"
+        android:id="@+id/btn_add_skill"
+
+
+        />
+
+
+</LinearLayout>

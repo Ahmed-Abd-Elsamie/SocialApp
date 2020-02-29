@@ -1,0 +1,115 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".ui.fragments.NotificationFragment"
+    android:background="@drawable/fragment_background"
+
+    >
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+
+
+                >
+
+                <com.orangegangsters.github.swipyrefreshlayout.library.SwipyRefreshLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scrollbars="vertical"
+                    android:id="@+id/refresh"
+                    app:srl_direction="bottom"
+
+                    >
+
+                    <android.support.v7.widget.RecyclerView
+
+                        android:id="@+id/main_screen_recycler"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:scrollbars="vertical"
+                        >
+
+                    </android.support.v7.widget.RecyclerView>
+
+
+
+
+                </com.orangegangsters.github.swipyrefreshlayout.library.SwipyRefreshLayout>
+
+
+
+                <com.github.clans.fab.FloatingActionButton
+                    android:id="@+id/fab2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="160dp"
+                    android:layout_gravity="bottom|end"
+                    android:layout_marginRight="18dp"
+                    app:backgroundTint="@color/colorFAB2"
+                    app:elevation="6dp"
+
+                    android:src="@drawable/ic_fab_img_post"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentBottom="true"
+                    app:fab_colorNormal="#fff"
+                    app:fab_colorPressed="@color/colorPrimaryDark"
+                    android:visibility="invisible"
+
+                    />
+
+                <com.github.clans.fab.FloatingActionButton
+                    android:id="@+id/fab1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="90dp"
+                    android:layout_gravity="bottom|end"
+                    android:layout_marginRight="18dp"
+                    app:elevation="6dp"
+                    app:backgroundTint="@color/colorFAB1"
+                    android:src="@drawable/ic_fab_post"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentBottom="true"
+                    app:fab_colorNormal="#fff"
+                    app:fab_colorPressed="@color/colorPrimaryDark"
+                    android:visibility="invisible"
+
+                    />
+
+
+
+                <com.github.clans.fab.FloatingActionButton
+                    android:id="@+id/fab"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom|end"
+                    app:elevation="6dp"
+                    app:backgroundTint="@color/colorAccent"
+                    android:layout_margin="18dp"
+                    android:src="@drawable/fab_add"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentRight="true"
+                    app:fab_colorNormal="@color/colorPrimary"
+                    app:fab_colorPressed="@color/colorPrimaryDark"
+
+
+                    />
+
+                <ProgressBar
+                    android:id="@+id/pro"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true"
+                    android:visibility="gone"
+                    android:background="#000"
+                    />
+
+
+
+            </RelativeLayout>
+
+</FrameLayout>
