@@ -1,4 +1,4 @@
-package com.example.root.socialapp.notification;
+package com.example.root.socialapp.adapters;
 
 import android.app.Activity;
 import android.support.v7.widget.CardView;
@@ -11,6 +11,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.root.socialapp.R;
+import com.example.root.socialapp.models.Notification_item;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;

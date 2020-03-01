@@ -1,9 +1,11 @@
 package com.example.root.socialapp.adapters;
 
 import android.app.Activity;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.StrictMode;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -16,7 +18,9 @@ import android.widget.Toast;
 import com.example.root.socialapp.MyData;
 import com.example.root.socialapp.R;
 import com.example.root.socialapp.models.User;
+import com.example.root.socialapp.notification.NotificationHandle;
 import com.example.root.socialapp.ui.UserProfile;
+import com.example.root.socialapp.viewmodels.UsersViewModel;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -46,6 +50,7 @@ public class UsersAdapter  extends RecyclerView.Adapter<UsersAdapter.ViewHolder>
     private FirebaseAuth mAuth;
     private String uid;
     private DatabaseReference referenceUsers;
+    private UsersViewModel usersViewModel;
 
     public UsersAdapter() {
 
@@ -102,8 +107,29 @@ public class UsersAdapter  extends RecyclerView.Adapter<UsersAdapter.ViewHolder>
         final User user = list.get(position);
         holder.txtName.setText(user.getName());
         Picasso.with(context).load(user.getImg()).into(holder.userImg);
+
+        usersViewModel = ViewModelProviders.of((FragmentActivity) context).get(UsersViewModel.class);
+        usersViewModel.init();
         // Check request State
-        referenceUsers = FirebaseDatabase.getInstance().getReference().child("users");
+        usersViewModel.checkRequestState(holder.imgAdd, user);
+
+        holder.imgAdd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(context, "CLICK", Toast.LENGTH_SHORT).show();
+                usersViewModel.sendConnectRequest(user, 8);
+                NotificationHandle.sendNotification(user, "New Friend Request");
+            }
+        });
+
+        holder.userCard.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, UserProfile.class);
+            }
+        });
+
+        /*referenceUsers = FirebaseDatabase.getInstance().getReference().child("users");
         mAuth = FirebaseAuth.getInstance();
         uid = mAuth.getCurrentUser().getUid().toString();
         referenceUsers.addValueEventListener(new ValueEventListener() {
@@ -120,8 +146,8 @@ public class UsersAdapter  extends RecyclerView.Adapter<UsersAdapter.ViewHolder>
 
             }
         });
-
-        holder.imgAdd.setOnClickListener(new View.OnClickListener() {
+*/
+        /*holder.imgAdd.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     // Send a Friend Request and add to my Requests
@@ -167,7 +193,7 @@ public class UsersAdapter  extends RecyclerView.Adapter<UsersAdapter.ViewHolder>
 
                     context.startActivity(new Intent(context,UserProfile.class));
             }});
-
+*/
 
 
     }

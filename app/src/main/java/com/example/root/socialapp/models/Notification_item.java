@@ -1,4 +1,4 @@
-package com.example.root.socialapp.notification;
+package com.example.root.socialapp.models;
 
 /**
  * Created by root on 17/08/18.

@@ -37,8 +37,6 @@ public class UsersRepo {
     }
 
     private void getAllUsers(int num_items) {
-        auth = FirebaseAuth.getInstance();
-        final String id = auth.getCurrentUser().getUid();
         reference = FirebaseDatabase.getInstance().getReference().child("users");
         final List<User> list = new ArrayList<>();
         Query query = reference.limitToLast(num_items);
@@ -68,4 +66,11 @@ public class UsersRepo {
 
     }
 
+    public void sendConnectRequest(User user){
+        reference = FirebaseDatabase.getInstance().getReference().child("users");
+        auth = FirebaseAuth.getInstance();
+        final String id = auth.getCurrentUser().getUid();
+        reference.child(id).child("requests").child("mine").child(user.getId()).setValue("sent");
+        reference.child(user.getId()).child("requests").child("coming").child(id).setValue("received");
+    }
 }

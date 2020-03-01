@@ -12,8 +12,8 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 
 import com.example.root.socialapp.R;
-import com.example.root.socialapp.notification.NotificationAdapter;
-import com.example.root.socialapp.notification.Notification_item;
+import com.example.root.socialapp.adapters.NotificationAdapter;
+import com.example.root.socialapp.models.Notification_item;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
