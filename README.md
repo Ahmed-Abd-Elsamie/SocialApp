@@ -26,3 +26,7 @@ You receive notification by friends messages or friend requests.
   <img src="imgs/i14.png" width="250" title="hover text">
 
 </p>
+
+
+## Version 2.0
+MVVM Pattern
