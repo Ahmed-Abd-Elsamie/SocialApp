@@ -1,6 +1,8 @@
 package com.example.root.socialapp.adapters;
 
 import android.app.Activity;
+import android.arch.lifecycle.ViewModelProviders;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -12,6 +14,7 @@ import android.widget.Toast;
 
 import com.example.root.socialapp.R;
 import com.example.root.socialapp.models.Notification_item;
+import com.example.root.socialapp.viewmodels.NotificationsViewModel;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -36,6 +39,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
     private DatabaseReference reference;
     private FirebaseAuth mAuth;
     private String uid;
+    private NotificationsViewModel notificationsViewModel;
 
 
 
@@ -63,10 +67,8 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
     }
 
     public NotificationAdapter(List<Notification_item> notificationItemList , Activity mContext) {
-
         list = notificationItemList;
         context = mContext;
-
     }
 
     @Override
@@ -74,11 +76,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
         // create a new view
         View v = (View) LayoutInflater.from(parent.getContext()).inflate(R.layout.item_notification, parent, false);
         NotificationAdapter.ViewHolder vh = new NotificationAdapter.ViewHolder(v);
-
-
-
         return vh;
-
     }
 
 
@@ -86,22 +84,29 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
 
     @Override
     public void onBindViewHolder(final NotificationAdapter.ViewHolder holder, final int position) {
+        final Notification_item notification_item = list.get(position);
+        notificationsViewModel = ViewModelProviders.of((FragmentActivity) context).get(NotificationsViewModel.class);
+        notificationsViewModel.init();
+        holder.txtName.setText(notification_item.getName());
+        Picasso.with(context).load(notification_item.getImg()).into(holder.userImg);
 
-        final Notification_item user = list.get(position);
 
-
-        mAuth = FirebaseAuth.getInstance();
-        uid = mAuth.getCurrentUser().getUid().toString();
+        holder.btnAccept.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                notificationsViewModel.acceptRequest(notification_item.getId());
+            }
+        });
+        /*mAuth = FirebaseAuth.getInstance();
+        uid = mAuth.getCurrentUser().getUid();
 
         reference = FirebaseDatabase.getInstance().getReference().child("users");
 
-        reference.child(user.getId()).addValueEventListener(new ValueEventListener() {
+        reference.child(notification_item.getId()).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-
                 holder.txtName.setText(dataSnapshot.child("name").getValue().toString());
                 Picasso.with(context).load(dataSnapshot.child("img").getValue().toString()).into(holder.userImg);
-
             }
 
             @Override
@@ -115,20 +120,20 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
             @Override
             public void onClick(View view) {
 
-                Toast.makeText(context , user.getId() , Toast.LENGTH_SHORT).show();
+                Toast.makeText(context , notification_item.getId() , Toast.LENGTH_SHORT).show();
 
                 reference = FirebaseDatabase.getInstance().getReference().child("users");
-                reference.child(uid).child("friends").child(user.getId()).child("id").setValue(user.getId());
-                reference.child(user.getId()).child("friends").child(uid).child("id").setValue(uid);
+                reference.child(uid).child("friends").child(notification_item.getId()).child("id").setValue(notification_item.getId());
+                reference.child(notification_item.getId()).child("friends").child(uid).child("id").setValue(uid);
 
                 // Removing Request
-                reference.child(uid).child("myrequests").child(user.getId()).removeValue();
+                reference.child(uid).child("myrequests").child(notification_item.getId()).removeValue();
 
 
             }
         });
 
-
+*/
 
     }
 

@@ -5,7 +5,6 @@ import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
 import android.os.AsyncTask;
 import android.widget.ImageButton;
-import android.widget.Toast;
 
 import com.example.root.socialapp.MyData;
 import com.example.root.socialapp.R;

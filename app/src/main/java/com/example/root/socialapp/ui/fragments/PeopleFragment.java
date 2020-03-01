@@ -83,8 +83,6 @@ public class PeopleFragment extends Fragment {
             }
         });
 
-
-        initRecyclerView();
         return view;
     }
 

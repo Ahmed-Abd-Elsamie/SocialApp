@@ -15,17 +15,6 @@
 
         >
 
-        <ProgressBar
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true"
-            android:visibility="gone"
-
-            />
-
-
-
         <android.support.v7.widget.RecyclerView
 
             android:id="@+id/notification_screen_recycler"
@@ -39,6 +28,15 @@
 
         </android.support.v7.widget.RecyclerView>
 
+        <ProgressBar
+            android:id="@+id/pro"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:visibility="gone"
+            android:background="#000"
+            />
 
     </RelativeLayout>
 

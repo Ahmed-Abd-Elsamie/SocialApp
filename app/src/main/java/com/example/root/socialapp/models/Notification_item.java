@@ -6,12 +6,11 @@ package com.example.root.socialapp.models;
 
 public class Notification_item {
 
-    String id;
-    String name;
-    String img;
+    private String id;
+    private String name;
+    private String img;
 
     public Notification_item(){
-
 
     }
 

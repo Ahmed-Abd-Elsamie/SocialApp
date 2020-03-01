@@ -2,7 +2,10 @@ package com.example.root.socialapp.ui.fragments;
 
 
 import android.app.Activity;
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -14,15 +17,7 @@ import android.widget.ProgressBar;
 import com.example.root.socialapp.R;
 import com.example.root.socialapp.adapters.NotificationAdapter;
 import com.example.root.socialapp.models.Notification_item;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
-import com.google.firebase.database.ValueEventListener;
-
-import java.util.ArrayList;
+import com.example.root.socialapp.viewmodels.NotificationsViewModel;
 import java.util.List;
 
 
@@ -31,49 +26,50 @@ import java.util.List;
  */
 public class NotificationFragment extends Fragment {
 
-
+    private int num_item = 8;
     private View view;
-    private DatabaseReference referenceUsers;
-    private String uid;
-    private FirebaseAuth mAuth;
-    private RecyclerView mRecyclerView;
-    private ProgressBar progressBar;
-    private RecyclerView.LayoutManager mLayoutManager;
     private Activity context;
-    private int num_item = 2;
-    public static List<String> keys;
-    private RecyclerView.Adapter mAdapter;
-
-
-
+    private RecyclerView recyclerView;
+    private ProgressBar pb;
+    private NotificationsViewModel notificationsViewModel;
+    private NotificationAdapter adapter;
 
 
     public NotificationFragment() {
         // Required empty public constructor
     }
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
         view = inflater.inflate(R.layout.fragment_notification, container, false);
         context = getActivity();
+        // init views
+        recyclerView = (RecyclerView) view.findViewById(R.id.notification_screen_recycler);
+        pb = (ProgressBar) view.findViewById(R.id.pro);
 
-        mAuth = FirebaseAuth.getInstance();
-        uid = mAuth.getCurrentUser().getUid().toString();
-        referenceUsers = FirebaseDatabase.getInstance().getReference().child("users");
+        notificationsViewModel = ViewModelProviders.of(this).get(NotificationsViewModel.class);
+        notificationsViewModel.init();
+        notificationsViewModel.getNotification().observe(this, new Observer<List<Notification_item>>() {
+            @Override
+            public void onChanged(@Nullable List<Notification_item> notification_items) {
+                adapter.notifyDataSetChanged();
+            }
+        });
 
-        mRecyclerView = (RecyclerView) view.findViewById(R.id.notification_screen_recycler);
+        notificationsViewModel.getIsUpdating().observe(this, new Observer<Boolean>() {
+            @Override
+            public void onChanged(@Nullable Boolean aBoolean) {
+                if (aBoolean){
+                    showProgressBar();
+                }else {
+                    hideProgressBar();
+                }
+            }
+        });
 
+        initRecyclerView();
 
-        keys = new ArrayList<>();
-
-
-        mRecyclerView.setHasFixedSize(true);
-        mLayoutManager = new LinearLayoutManager(context);
-        mRecyclerView.setLayoutManager(mLayoutManager);
-
-        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
@@ -81,84 +77,31 @@ public class NotificationFragment extends Fragment {
 
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-
-
+                if (!recyclerView.canScrollVertically(1)){
+                    num_item = num_item + 1;
+                    recyclerView.refreshDrawableState();
+                    notificationsViewModel.loadMoreNotifications(num_item);
+                }
 
             }
         });
-
-
-
-
-
-
-        GetAllNotifications();
-
-
-
 
         return view;
     }
 
-
-
-
-    private void GetAllNotifications(){
-
-
-
-        final List<Notification_item> list = new ArrayList<>();
-
-        Query query = referenceUsers.limitToFirst(num_item);
-
-
-        referenceUsers.child(uid).child("myrequests").addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-
-                if (dataSnapshot.hasChildren()){
-
-                    list.clear();
-                    for (DataSnapshot snapshot : dataSnapshot.getChildren()){
-
-                        Notification_item not = new Notification_item();
-
-                        /*not.setName(snapshot.child("name").getValue().toString());
-                        not.setImg(snapshot.child("img").getValue().toString());
-                        not.setId(snapshot.child("id").getValue().toString());
-                        */
-                        not.setId(snapshot.child("id").getValue().toString());
-
-                        //Toast.makeText(context , snapshot.getValue().toString() , Toast.LENGTH_SHORT).show();
-
-                        keys.add(snapshot.getKey().toString());
-                        list.add(not);
-
-                    }
-
-
-                    mAdapter = new NotificationAdapter(list , context);
-
-                    mRecyclerView.setAdapter(mAdapter);
-
-
-
-                }else {
-
-
-
-                }
-
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-
-
-
+    private void initRecyclerView() {
+        adapter = new NotificationAdapter(notificationsViewModel.getNotification().getValue(), context);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(context);
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setAdapter(adapter);
+        recyclerView.setHasFixedSize(true);
     }
 
+    private void showProgressBar() {
+        pb.setVisibility(View.VISIBLE);
+    }
+
+    private void hideProgressBar() {
+        pb.setVisibility(View.GONE);
+    }
 }
