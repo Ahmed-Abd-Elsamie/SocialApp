@@ -30,3 +30,19 @@ You receive notification by friends messages or friend requests.
 
 ## Version 2.0
 MVVM Pattern
+
+## Technologies
+1 - Java
+</br>
+2 - Firebase Dataabase
+</br>
+3 - OneSignal
+</br>
+4 - hdodenhof CircularImageView
+</br>
+5 - RecyclerView and CardView
+</br>
+6 - Picasso
+</br>
+7 - MVVM Designe Pattern
+</br>
