@@ -46,3 +46,15 @@ MVVM Pattern
 </br>
 7 - MVVM Designe Pattern
 </br>
+
+
+## Bugs to Fix
+
+1 - Like Button problem
+</br>
+2 - instantaneous change for UI
+</br>
+
+## New Features to Add
+
+Social media Authentication(Facebook - Google - Twitter)
