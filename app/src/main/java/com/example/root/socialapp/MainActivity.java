@@ -9,6 +9,8 @@ import android.widget.Button;
 import android.widget.ImageButton;
 
 import com.ToxicBakery.viewpager.transforms.CubeOutTransformer;
+import com.example.root.socialapp.models.User;
+import com.example.root.socialapp.repositories.Repo;
 import com.example.root.socialapp.ui.Login;
 import com.example.root.socialapp.ui.UserProfile;
 import com.google.firebase.auth.FirebaseAuth;
@@ -68,9 +70,14 @@ public class MainActivity extends AppCompatActivity {
         btnProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Repo repo = new Repo();
+                User myData = repo.getMyData();
+                Intent intent = new Intent(MainActivity.this, UserProfile.class);
+                intent.putExtra("user", myData);
+                startActivity(intent);
                 MyData.userProfileIMG = MyData.img;
                 MyData.UserProfileID = MyData.myid;
-                startActivity(new Intent(MainActivity.this , UserProfile.class));
+                //startActivity(new Intent(MainActivity.this , UserProfile.class));
             }
         });
 

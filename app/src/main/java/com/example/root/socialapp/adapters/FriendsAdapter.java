@@ -17,44 +17,28 @@ import java.util.List;
  */
 
 public class FriendsAdapter extends UsersAdapter {
-
     private Activity context;
-
-
     public FriendsAdapter(List<User> userList, Activity mContext) {
         super(userList, mContext);
         context = mContext;
-
     }
-
-
-
-
 
     @Override
     public void onBindViewHolder(final UsersAdapter.ViewHolder holder, final int position) {
-
         final User user = list.get(position);
-
         holder.txtName.setText(user.getName());
         Picasso.with(context).load(user.getImg()).into(holder.userImg);
         holder.imgAdd.setBackgroundResource(R.drawable.ic_message);
-
         holder.imgAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                Chat_Data.id = user.getId();
+                Intent intent = new Intent(context, Chat.class);
+                intent.putExtra("user", user);
+                /*Chat_Data.id = user.getId();
                 Chat_Data.name = user.getName();
-                Chat_Data.img = user.getImg();
-                context.startActivity(new Intent(context,Chat.class));
-
-
+                Chat_Data.img = user.getImg();*/
+                context.startActivity(intent);
             }
         });
-
-
     }
-
-
 }

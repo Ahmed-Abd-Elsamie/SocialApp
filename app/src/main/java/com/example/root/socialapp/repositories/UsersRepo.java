@@ -4,6 +4,7 @@ import android.arch.lifecycle.MutableLiveData;
 
 import com.example.root.socialapp.models.User;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -38,6 +39,8 @@ public class UsersRepo {
 
     private void getAllUsers(int num_items) {
         reference = FirebaseDatabase.getInstance().getReference().child("users");
+        auth = FirebaseAuth.getInstance();
+        final String id = auth.getCurrentUser().getUid();
         final List<User> list = new ArrayList<>();
         Query query = reference.limitToLast(num_items);
         query.addValueEventListener(new ValueEventListener() {
@@ -48,6 +51,9 @@ public class UsersRepo {
                     dataSet.clear();
                     for (DataSnapshot snapshot : dataSnapshot.getChildren()){
                         User user = snapshot.getValue(User.class);
+                        if (user.getId().equals(id) || isFriend(user)){
+                            continue;
+                        }
                         list.add(user);
                     }
                     Collections.reverse(list);
@@ -64,6 +70,41 @@ public class UsersRepo {
             }
         });
 
+    }
+
+    private boolean isFriend(final User user) {
+        auth = FirebaseAuth.getInstance();
+        String id = auth.getCurrentUser().getUid();
+        final boolean[] friend = {false};
+        reference.child(id).child("friends").addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                if (dataSnapshot.child("id").getValue().equals(user.getId())){
+                    friend[0] = true;
+                }
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+        return friend[0];
     }
 
     public void sendConnectRequest(User user){

@@ -38,13 +38,10 @@ public class AllFriends extends AppCompatActivity {
     public static List<String> keys;
     private RecyclerView.Adapter mAdapter;
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_all_friends);
-
 
         mAuth = FirebaseAuth.getInstance();
         uid = mAuth.getCurrentUser().getUid().toString();
@@ -52,9 +49,7 @@ public class AllFriends extends AppCompatActivity {
 
         mRecyclerView = (RecyclerView)findViewById(R.id.friends_screen_recycler);
 
-
         keys = new ArrayList<>();
-
 
         mRecyclerView.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(AllFriends.this);
@@ -80,70 +75,36 @@ public class AllFriends extends AppCompatActivity {
 
     }
 
-
-
-
-
-
-
-
     private void GetAllUsers(){
-
-
         final List<User> list = new ArrayList<>();
-
         Query query = referenceUsers.limitToFirst(num_item);
-
-
         referenceUsers.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-
-
                 if (dataSnapshot.hasChildren()){
-
                     String listfriendsid;
                     list.clear();
-
                     if (MyData.UserProfileID.equals(uid)){
                         listfriendsid = uid;
                     }else {
                         listfriendsid = MyData.UserProfileID;
                     }
-
                     for (DataSnapshot snapshot : dataSnapshot.child(listfriendsid).child("friends").getChildren()){
-
                         User user = new User();
-
-
                         // Getting user data
-
                         String id = snapshot.child("id").getValue().toString();
-
                         DataSnapshot s = dataSnapshot.child(id);
-
                         user.setName(s.child("name").getValue().toString());
                         user.setImg(s.child("img").getValue().toString());
                         user.setId(s.child("id").getValue().toString());
-
                         keys.add(snapshot.getKey().toString());
                         list.add(user);
-
-                        }
-
-
-
-
-
+                    }
 
                     mAdapter = new FriendsAdapter(list , AllFriends.this);
                     mRecyclerView.setAdapter(mAdapter);
 
-
-
                 }else {
-
-
 
                 }
 
@@ -154,8 +115,6 @@ public class AllFriends extends AppCompatActivity {
 
             }
         });
-
-
 
     }
 }
