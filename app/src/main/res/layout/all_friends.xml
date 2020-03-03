@@ -72,15 +72,14 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:gravity="center"
-                    android:text="CONNECT"
+                    android:text="....."
                     android:textColor="#fff"
                     android:background="@drawable/btn_connect"
                     android:layout_marginBottom="10dp"
                     android:id="@+id/btn_connect"
                     android:paddingLeft="10dp"
                     android:paddingRight="10dp"
-
-
+                    android:enabled="false"
                     />
 
 

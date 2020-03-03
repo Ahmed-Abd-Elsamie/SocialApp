@@ -94,7 +94,6 @@ public class UsersViewModel  extends ViewModel {
                 if (dataSnapshot.child(id).child("requests").child("mine").hasChild(user.getId())){
                     imgAdd.setBackgroundResource(R.drawable.ic_request_sent);
                     imgAdd.setEnabled(false);
-                    MyData.requestStateSent = true;
                 }
                 if (dataSnapshot.child(id).child("requests").child("coming").hasChild(user.getId())){
                     imgAdd.setBackgroundResource(R.drawable.ic_accept_black_24dp);

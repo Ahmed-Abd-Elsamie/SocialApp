@@ -76,12 +76,12 @@ public class ChatRepo {
     }
 
     public void sendMessage(String msg){
-            Map<String, String> map = new HashMap<String, String>();
-            map.put("message", msg);
-            map.put("user", user.getId());
-            firebase1.push().setValue(map);
-            firebase2.push().setValue(map);
-            NotificationHandle.sendNotification(user, msg);
+        Map<String, String> map = new HashMap<String, String>();
+        map.put("message", msg);
+        map.put("user", user.getId());
+        firebase1.push().setValue(map);
+        firebase2.push().setValue(map);
+        NotificationHandle.sendNotification(user, msg);
     }
 
 }

@@ -40,6 +40,7 @@ public class MainActivity extends AppCompatActivity {
     private String uid;
     private FirebaseUser user;
     private String MyIMG;
+    private User myData;
 
 
     @Override
@@ -48,9 +49,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         OneSignal.startInit(this).init();
 
-
         // init Views
-
         btnHome = (ImageButton) findViewById(R.id.btn_home);
         btnPeople = (ImageButton) findViewById(R.id.btn_people);
         btnMessaging = (ImageButton) findViewById(R.id.btn_messaging);
@@ -59,9 +58,7 @@ public class MainActivity extends AppCompatActivity {
         btnProfile = (CircleImageView) findViewById(R.id.btn_profile);
         MainPager = (ViewPager)findViewById(R.id.main_pager);
 
-
         // init firebase
-
         mAuth = FirebaseAuth.getInstance();
         mPagerViewAdapter = new PagerAdapter(getSupportFragmentManager());
         MainPager.setAdapter(mPagerViewAdapter);
@@ -70,14 +67,9 @@ public class MainActivity extends AppCompatActivity {
         btnProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Repo repo = new Repo();
-                User myData = repo.getMyData();
                 Intent intent = new Intent(MainActivity.this, UserProfile.class);
                 intent.putExtra("user", myData);
                 startActivity(intent);
-                MyData.userProfileIMG = MyData.img;
-                MyData.UserProfileID = MyData.myid;
-                //startActivity(new Intent(MainActivity.this , UserProfile.class));
             }
         });
 
@@ -164,32 +156,19 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-
         user = mAuth.getCurrentUser();
-
         if(user == null){
-
             startActivity(new Intent(MainActivity.this , Login.class));
             finish();
-
         }else {
-
-            uid = mAuth.getCurrentUser().getUid().toString();
+            myData = new User();
+            uid = mAuth.getCurrentUser().getUid();
             reference = FirebaseDatabase.getInstance().getReference().child("users").child(uid);
-
-
             reference.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
-
-                    MyData.img = dataSnapshot.child("img").getValue().toString();
-                    MyData.name = dataSnapshot.child("name").getValue().toString();
-                    MyData.myid = dataSnapshot.child("id").getValue().toString();
-                    MyData.email = dataSnapshot.child("email").getValue().toString();
-
-                    MyIMG = dataSnapshot.child("img").getValue().toString();
-                    Picasso.with(MainActivity.this).load(MyIMG).into(btnProfile);
-
+                    myData = dataSnapshot.getValue(User.class);
+                    Picasso.with(MainActivity.this).load(myData.getImg()).into(btnProfile);
                 }
 
                 @Override

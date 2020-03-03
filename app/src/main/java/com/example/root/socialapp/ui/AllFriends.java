@@ -1,6 +1,7 @@
 package com.example.root.socialapp.ui;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -12,6 +13,7 @@ import com.example.root.socialapp.MyData;
 import com.example.root.socialapp.R;
 import com.example.root.socialapp.adapters.FriendsAdapter;
 import com.example.root.socialapp.models.User;
+import com.example.root.socialapp.repositories.UsersRepo;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -34,14 +36,20 @@ public class AllFriends extends AppCompatActivity {
     private ProgressBar progressBar;
     private RecyclerView.LayoutManager mLayoutManager;
     private Activity context;
-    private int num_item = 2;
+    private int num_items = 8;
     public static List<String> keys;
     private RecyclerView.Adapter mAdapter;
+    private UsersRepo usersRepo;
+    private User user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_all_friends);
+
+        Intent intent = getIntent();
+        user = intent.getParcelableExtra("user");
+        usersRepo = UsersRepo.getInstance();
 
         mAuth = FirebaseAuth.getInstance();
         uid = mAuth.getCurrentUser().getUid().toString();
@@ -55,7 +63,8 @@ public class AllFriends extends AppCompatActivity {
         mLayoutManager = new LinearLayoutManager(AllFriends.this);
         mRecyclerView.setLayoutManager(mLayoutManager);
 
-        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+
+        /*mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
@@ -63,44 +72,34 @@ public class AllFriends extends AppCompatActivity {
 
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-
-
-
+                if (!mRecyclerView.canScrollVertically(1)){
+                    num_items = num_items + 1;
+                    mRecyclerView.refreshDrawableState();
+                    usersRepo.getAllFriends(num_items, user,AllFriends.this, mRecyclerView);
+                }
             }
         });
 
+         */
 
-        GetAllUsers();
+        usersRepo.getAllFriends(num_items, user,AllFriends.this, mRecyclerView);
 
+        //GetAllFriends(num_items);
 
     }
 
-    private void GetAllUsers(){
+    private void GetAllFriends(int num_items){
         final List<User> list = new ArrayList<>();
-        Query query = referenceUsers.limitToFirst(num_item);
-        referenceUsers.addValueEventListener(new ValueEventListener() {
+        Query query = referenceUsers.limitToFirst(num_items);
+        query.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.hasChildren()){
-                    String listfriendsid;
                     list.clear();
-                    if (MyData.UserProfileID.equals(uid)){
-                        listfriendsid = uid;
-                    }else {
-                        listfriendsid = MyData.UserProfileID;
-                    }
-                    for (DataSnapshot snapshot : dataSnapshot.child(listfriendsid).child("friends").getChildren()){
-                        User user = new User();
-                        // Getting user data
-                        String id = snapshot.child("id").getValue().toString();
-                        DataSnapshot s = dataSnapshot.child(id);
-                        user.setName(s.child("name").getValue().toString());
-                        user.setImg(s.child("img").getValue().toString());
-                        user.setId(s.child("id").getValue().toString());
-                        keys.add(snapshot.getKey().toString());
+                    for (DataSnapshot snapshot : dataSnapshot.child(user.getId()).child("friends").getChildren()){
+                        User user = snapshot.getValue(User.class);
                         list.add(user);
                     }
-
                     mAdapter = new FriendsAdapter(list , AllFriends.this);
                     mRecyclerView.setAdapter(mAdapter);
 

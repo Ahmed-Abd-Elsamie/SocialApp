@@ -3,6 +3,7 @@ package com.example.root.socialapp.ui;
 import android.app.Activity;
 import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -13,6 +14,7 @@ import android.os.StrictMode;
 import android.support.annotation.NonNull;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
@@ -22,6 +24,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -29,6 +32,8 @@ import android.widget.TextView;
 import com.example.root.socialapp.MyData;
 import com.example.root.socialapp.R;
 import com.example.root.socialapp.models.User;
+import com.example.root.socialapp.repositories.UsersRepo;
+import com.example.root.socialapp.viewmodels.UsersViewModel;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -67,6 +72,7 @@ public class UserProfile extends AppCompatActivity {
     private TextView txtInfoEmail;
     private String id;
     private User user;
+    private UsersViewModel usersViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,7 +97,9 @@ public class UserProfile extends AppCompatActivity {
         AllFriendsActivity.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(UserProfile.this , AllFriends.class));
+                Intent friendsIntent = new Intent(UserProfile.this , AllFriends.class);
+                friendsIntent.putExtra("user", user);
+                startActivity(friendsIntent);
             }
         });
 
@@ -140,20 +148,22 @@ public class UserProfile extends AppCompatActivity {
         });
 
         // getting data
-        /*Picasso.with(this).load(user.getImg()).into(UserProfileImg);
+        Picasso.with(this).load(user.getImg()).into(UserProfileImg);
         txtInfoEmail.setText(user.getEmail());
+
         // Check if this is my profile or not
         if(id.equals(user.getId())){
             btnConnect.setVisibility(View.GONE);
-        }
-        if (!id.equals(user.getId())){
+        }else {
             fabEditSkills.setVisibility(View.GONE);
         }
         // Check if Request sent or not
-        /*if (MyData.requestStateSent == true){
-            btnConnect.setText("Request Pending...");
-            btnConnect.setEnabled(false);
-        }*/
+        UsersRepo usersRepo = UsersRepo.getInstance();
+        usersRepo.checkRequestState(user, btnConnect);
+        //if (MyData.requestStateSent == true){
+            //btnConnect.setText("Request Pending...");
+            //btnConnect.setEnabled(false);
+        //}
 
     }
 
@@ -171,7 +181,7 @@ public class UserProfile extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         // Getting number Of Friends Label
-        /*referenceRequest.child(user.getId()).child("friends").addValueEventListener(new ValueEventListener() {
+        referenceRequest.child(user.getId()).child("friends").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 numFriends.setText(" ." + dataSnapshot.getChildrenCount() + "");
@@ -182,8 +192,6 @@ public class UserProfile extends AppCompatActivity {
             }
         });
         GetUserSkills();
-
-         */
     }
 
     private void sendNotification(final String message) {

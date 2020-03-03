@@ -16,15 +16,14 @@ public class Repo {
     private User user;
 
     public Repo(){
-        reference = FirebaseDatabase.getInstance().getReference().child("users");
         auth = FirebaseAuth.getInstance();
         id = auth.getCurrentUser().getUid();
+        reference = FirebaseDatabase.getInstance().getReference().child("users").child(id);
         fillMyData();
     }
 
-
-    public void fillMyData(){
-        reference.child(id).addValueEventListener(new ValueEventListener() {
+    private void fillMyData(){
+        reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 user = new User(
