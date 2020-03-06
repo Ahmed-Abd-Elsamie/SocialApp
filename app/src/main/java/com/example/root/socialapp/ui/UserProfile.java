@@ -28,6 +28,7 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.root.socialapp.MyData;
 import com.example.root.socialapp.R;
@@ -65,7 +66,7 @@ public class UserProfile extends AppCompatActivity {
     private DatabaseReference referenceFriends;
     private TextView numFriends;
     private TextView txtName;
-    private Button BtnLogout;
+    private Button BtnLogout, btnAbout;
     private int GALARY_REQUEST = 100;
     private Uri imgurl;
     private CircleImageView UserProfileImg;
@@ -109,12 +110,15 @@ public class UserProfile extends AppCompatActivity {
         BtnLogout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                final ProgressDialog progressDialog = new ProgressDialog(UserProfile.this);
+                progressDialog.setMessage("Logging Out...");
+                progressDialog.show();
                 referenceRequest.child(id).child("token_id").setValue("").addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
                         auth.signOut();
                         OneSignal.sendTag("User_ID", "");
+                        progressDialog.dismiss();
                         startActivity(new Intent(UserProfile.this , Login.class));
                         finish();
                     }
@@ -122,6 +126,12 @@ public class UserProfile extends AppCompatActivity {
             }
         });
 
+        btnAbout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(UserProfile.this, "SOON !", Toast.LENGTH_SHORT).show();
+            }
+        });
         UserProfileImg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -179,6 +189,7 @@ public class UserProfile extends AppCompatActivity {
         fabEditSkills = (FloatingActionButton) findViewById(R.id.fab_edit_skills);
         UserProfileImg = (CircleImageView) findViewById(R.id.fab);
         txtName = findViewById(R.id.txt_name);
+        btnAbout = findViewById(R.id.btn_about);
     }
 
     @Override

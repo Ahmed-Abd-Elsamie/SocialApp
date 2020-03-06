@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import com.example.root.socialapp.MainActivity;
 import com.example.root.socialapp.R;
+import com.example.root.socialapp.models.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -42,9 +43,7 @@ public class Register extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
-
         pd = new ProgressDialog(this);
-
 
         // Assign Views
 
@@ -56,19 +55,13 @@ public class Register extends AppCompatActivity {
         btnLoginPage = (Button) findViewById(R.id.login_page);
 
         // init firebase
-
-
         mAuth = FirebaseAuth.getInstance();
         databaseReference = FirebaseDatabase.getInstance().getReference().child("users");
-
-
 
         registerBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 AddNewUser();
-
             }
         });
 
@@ -144,43 +137,7 @@ public class Register extends AppCompatActivity {
                 if (!task.isSuccessful()){
                     Toast.makeText(getApplicationContext(), "Failed Please Check your Data!", Toast.LENGTH_SHORT).show();
                 }else{
-                    mAuth.signInWithEmailAndPassword(email,pass);
-
                     AddUser();
-
-                    // Notification Handling
-
-                    uid = mAuth.getCurrentUser().getUid().toString();
-
-                    mAuth.getCurrentUser().getIdToken(true).addOnSuccessListener(new OnSuccessListener<GetTokenResult>() {
-                        @Override
-                        public void onSuccess(GetTokenResult getTokenResult) {
-
-
-                            String tokenId = getTokenResult.getToken();
-                            databaseReference.child(uid).child("token_id").setValue(tokenId).addOnSuccessListener(new OnSuccessListener<Void>() {
-                                @Override
-                                public void onSuccess(Void aVoid) {
-
-                                    startActivity(new Intent(Register.this, MainActivity.class));
-                                    overridePendingTransition(R.anim.slide_in_right , R.anim.slide_out_right);
-
-                                    finish();
-
-                                }
-                            });
-
-                        }
-                    });
-
-
-                    /////////////////
-
-                   /* startActivity(new Intent(Register.this, Register.class));
-                    overridePendingTransition(R.anim.slide_in_right , R.anim.slide_out_right);
-
-                    finish();
-                    */
                 }
             }
         });
@@ -191,17 +148,43 @@ public class Register extends AppCompatActivity {
 
 
     public void AddUser(){
-
-
         final String name = txtName.getText().toString();
         final String email = txtEmail.getText().toString().trim();
         final String UID = mAuth.getCurrentUser().getUid().toString();
         databaseReference.child(UID).child("name").setValue(name);
         databaseReference.child(UID).child("email").setValue(email);
         databaseReference.child(UID).child("id").setValue(UID);
-        databaseReference.child(UID).child("img").setValue("default");
+        databaseReference.child(UID).child("img").setValue("default").addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if (task.isSuccessful()){
+                    mAuth.signInWithEmailAndPassword(email, txtPassword.getText().toString()).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            // Notification Handling
+                            uid = mAuth.getCurrentUser().getUid().toString();
 
+                            mAuth.getCurrentUser().getIdToken(true).addOnSuccessListener(new OnSuccessListener<GetTokenResult>() {
+                                @Override
+                                public void onSuccess(GetTokenResult getTokenResult) {
+                                    String tokenId = getTokenResult.getToken();
+                                    databaseReference.child(uid).child("token_id").setValue(tokenId).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                        @Override
+                                        public void onSuccess(Void aVoid) {
+                                            startActivity(new Intent(Register.this, MainActivity.class));
+                                            overridePendingTransition(R.anim.slide_in_right , R.anim.slide_out_right);
+                                            finish();
+                                        }
+                                    });
 
+                                }
+                            });
+                        }
+                    });
+
+                }
+            }
+        });
 
     }
 }

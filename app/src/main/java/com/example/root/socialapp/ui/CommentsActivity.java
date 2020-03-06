@@ -53,11 +53,7 @@ public class CommentsActivity extends AppCompatActivity {
     private ImageButton btnSendComment;
     private EditText txtComment;
     private CircleImageView Myimg;
-    private FirebaseAuth mAuth;
     private DatabaseReference reference;
-    private RecyclerView mRecyclerView;
-    private RecyclerView.LayoutManager mLayoutManager;
-    private RecyclerView.Adapter mAdapter;
     private ImageView postImg;
     private CircleImageView postUserImg;
     private TextView txtUserName;
@@ -72,6 +68,7 @@ public class CommentsActivity extends AppCompatActivity {
     private ProgressBar pb;
     private CommentsViewModel commentsViewModel;
     private CommentsAdapter adapter;
+    private Post post;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,7 +78,7 @@ public class CommentsActivity extends AppCompatActivity {
         // init views
         initViews();
         Intent intent = getIntent();
-        final Post post = intent.getParcelableExtra("post");
+        post = intent.getParcelableExtra("post");
         // Setting Post Data
         txtUserName.setText(post.getUser_name());
         txtUserTitle.setText("");
@@ -94,7 +91,7 @@ public class CommentsActivity extends AppCompatActivity {
 
         commentsViewModel = ViewModelProviders.of(this).get(CommentsViewModel.class);
         commentsViewModel.init(post.getId());
-
+/*
         commentsViewModel.getComments().observe(this, new Observer<List<Comment>>() {
             @Override
             public void onChanged(@Nullable List<Comment> list) {
@@ -112,7 +109,7 @@ public class CommentsActivity extends AppCompatActivity {
                     //recyclerView.smoothScrollToPosition(homeFragmentViewModel.getPosts().getValue().size() - 1);
                 }
             }
-        });
+        });*/
 
         initRecyclerView();
 
@@ -238,11 +235,11 @@ public class CommentsActivity extends AppCompatActivity {
         */
 
         // Getting Comments
-        //GetAllComments();
+        GetAllComments();
     }
 
     private void initRecyclerView() {
-        adapter = new CommentsAdapter(commentsViewModel.getComments().getValue(), this);
+        //adapter = new CommentsAdapter(commentsViewModel.getComments().getValue(), this);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
@@ -268,7 +265,8 @@ public class CommentsActivity extends AppCompatActivity {
 
 
     private void GetAllComments(){
-        /*final List<Comment> list = new ArrayList<>();
+        final List<Comment> list = new ArrayList<>();
+        reference = FirebaseDatabase.getInstance().getReference().child("comments").child(post.getId());
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -279,8 +277,8 @@ public class CommentsActivity extends AppCompatActivity {
                         list.add(comment);
                     }
                     Collections.reverse(list);
-                    mAdapter = new CommentsAdapter(list , CommentsActivity.this);
-                    mRecyclerView.setAdapter(mAdapter);
+                    adapter = new CommentsAdapter(list , CommentsActivity.this);
+                    recyclerView.setAdapter(adapter);
                 }else {
 
                 }
@@ -292,8 +290,6 @@ public class CommentsActivity extends AppCompatActivity {
 
             }
         });
-
-         */
 
     }
 

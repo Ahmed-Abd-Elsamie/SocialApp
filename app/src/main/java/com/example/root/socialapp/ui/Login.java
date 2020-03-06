@@ -33,14 +33,10 @@ public class Login extends AppCompatActivity {
     private String uid;
     private DatabaseReference reference;
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-
-
 
         // Assign Views
 
@@ -54,8 +50,6 @@ public class Login extends AppCompatActivity {
 
         mAuth = FirebaseAuth.getInstance();
         reference = FirebaseDatabase.getInstance().getReference();
-
-
 
         registerBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -72,8 +66,6 @@ public class Login extends AppCompatActivity {
         loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-
 
                 final String email = txtEmail.getText().toString().trim();
                 final String pass = txtPassword.getText().toString().trim();
@@ -97,52 +89,27 @@ public class Login extends AppCompatActivity {
                             pb.setVisibility(View.INVISIBLE);
                             Toast.makeText(getApplicationContext(), "Failed Please Check your Data!", Toast.LENGTH_SHORT).show();
                         }else{
-
-
                             // Handle Notification
-
-
-
-                            uid = mAuth.getCurrentUser().getUid().toString();
-
-
+                            uid = mAuth.getCurrentUser().getUid();
                             mAuth.getCurrentUser().getIdToken(true).addOnSuccessListener(new OnSuccessListener<GetTokenResult>() {
                                 @Override
                                 public void onSuccess(GetTokenResult getTokenResult) {
-
-
                                     String tokenId = getTokenResult.getToken();
                                     reference.child("users").child(uid).child("token_id").setValue(tokenId).addOnSuccessListener(new OnSuccessListener<Void>() {
                                         @Override
                                         public void onSuccess(Void aVoid) {
-
-
                                             pb.setVisibility(View.INVISIBLE);
                                             startActivity(new Intent(Login.this , MainActivity.class));
                                             finish();
-
                                         }
                                     });
 
                                 }
                             });
 
-
-
-
-
-
-                            //////
-
-
-
-
-
-
                         }
                     }
                 });
-
 
 
             }
@@ -150,7 +117,5 @@ public class Login extends AppCompatActivity {
 
 
     }
-
-
 
 }
