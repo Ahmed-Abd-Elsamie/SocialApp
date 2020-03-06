@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import com.ToxicBakery.viewpager.transforms.CubeOutTransformer;
 import com.example.root.socialapp.models.User;
@@ -41,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
     private FirebaseUser user;
     private String MyIMG;
     private User myData;
+    private ImageButton btnMore;
 
 
     @Override
@@ -57,6 +59,7 @@ public class MainActivity extends AppCompatActivity {
         //btnJob = (Button) findViewById(R.id.btn_job);
         btnProfile = (CircleImageView) findViewById(R.id.btn_profile);
         MainPager = (ViewPager)findViewById(R.id.main_pager);
+        btnMore = findViewById(R.id.btn_more);
 
         // init firebase
         mAuth = FirebaseAuth.getInstance();
@@ -101,6 +104,13 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+
+        btnMore.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(MainActivity.this, "SOON !", Toast.LENGTH_SHORT).show();
+            }
+        });
         MainPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -180,6 +190,10 @@ public class MainActivity extends AppCompatActivity {
             OneSignal.sendTag("User_ID", uid);
         }
 
+    }
+
+    public User getMyData(){
+        return myData;
     }
 
 }

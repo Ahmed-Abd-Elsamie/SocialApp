@@ -61,7 +61,7 @@ public class UsersRepo {
                     dataSet.clear();
                     for (DataSnapshot snapshot : dataSnapshot.getChildren()){
                         User user = snapshot.getValue(User.class);
-                        if (user.getId().equals(id) || isFriend(user)){
+                        if (user.getId().equals(id) || dataSnapshot.child(id).child("friends").hasChild(user.getId())){
                             continue;
                         }
                         list.add(user);
@@ -156,7 +156,7 @@ public class UsersRepo {
         final List<User> listFriends = new ArrayList<>();
         reference = FirebaseDatabase.getInstance().getReference().child("users");
         Query query = reference.limitToFirst(num_items);
-        query.addValueEventListener(new ValueEventListener() {
+        reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 listFriends.clear();

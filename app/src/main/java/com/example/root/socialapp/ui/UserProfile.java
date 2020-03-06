@@ -54,6 +54,8 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Scanner;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 public class UserProfile extends AppCompatActivity {
 
     private Button btnConnect;
@@ -62,10 +64,11 @@ public class UserProfile extends AppCompatActivity {
     private CoordinatorLayout AllFriendsActivity;
     private DatabaseReference referenceFriends;
     private TextView numFriends;
+    private TextView txtName;
     private Button BtnLogout;
     private int GALARY_REQUEST = 100;
     private Uri imgurl;
-    private FloatingActionButton UserProfileImg;
+    private CircleImageView UserProfileImg;
     private FloatingActionButton fabEditSkills;
 
     private StorageReference storageReference;
@@ -78,9 +81,9 @@ public class UserProfile extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_profile);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setTitle("");
-        setSupportActionBar(toolbar);
+        //Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        //toolbar.setTitle("");
+        //setSupportActionBar(toolbar);
 
         // init views
         initViews();
@@ -150,7 +153,7 @@ public class UserProfile extends AppCompatActivity {
         // getting data
         Picasso.with(this).load(user.getImg()).into(UserProfileImg);
         txtInfoEmail.setText(user.getEmail());
-
+        txtName.setText(user.getName());
         // Check if this is my profile or not
         if(id.equals(user.getId())){
             btnConnect.setVisibility(View.GONE);
@@ -174,7 +177,8 @@ public class UserProfile extends AppCompatActivity {
         BtnLogout = (Button) findViewById(R.id.btn_logout);
         txtInfoEmail = (TextView) findViewById(R.id.txt_info_email);
         fabEditSkills = (FloatingActionButton) findViewById(R.id.fab_edit_skills);
-        UserProfileImg = (FloatingActionButton) findViewById(R.id.fab);
+        UserProfileImg = (CircleImageView) findViewById(R.id.fab);
+        txtName = findViewById(R.id.txt_name);
     }
 
     @Override

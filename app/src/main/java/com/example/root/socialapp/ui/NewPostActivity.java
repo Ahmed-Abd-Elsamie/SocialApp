@@ -18,10 +18,12 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.example.root.socialapp.MainActivity;
 import com.example.root.socialapp.MyData;
 import com.example.root.socialapp.R;
+import com.example.root.socialapp.models.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -34,13 +36,15 @@ import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
 import java.util.Calendar;
+import java.util.HashMap;
+import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class NewPostActivity extends AppCompatActivity {
 
     private Button btnPost;
-    private ImageButton btnPhoto;
+    private ImageButton btnPhoto, btnVideo;
     private EditText txtPost;
     private CircleImageView imgUser;
     private FirebaseAuth mAuth;
@@ -49,6 +53,7 @@ public class NewPostActivity extends AppCompatActivity {
     private int GALARY_REQUEST = 100;
     private Uri imgUri;
     private String uid;
+    private User myData;
 
 
 
@@ -57,28 +62,24 @@ public class NewPostActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_post);
 
+        Intent intent = getIntent();
+        myData = intent.getParcelableExtra("user");
 
         // Assign Views
-
         btnPost = (Button) findViewById(R.id.btn_new_post);
         btnPhoto = (ImageButton) findViewById(R.id.btn_new_post_img);
+        btnVideo = (ImageButton) findViewById(R.id.btn_new_post_video);
         txtPost = (EditText) findViewById(R.id.txt_new_post);
         imgUser = (CircleImageView) findViewById(R.id.new_post_user_img);
 
-
         // load user image
-
-        Picasso.with(this).load(MyData.img).into(imgUser);
-
-
+        Picasso.with(this).load(myData.getImg()).into(imgUser);
 
         // init firebase
         mAuth = FirebaseAuth.getInstance();
         uid = mAuth.getCurrentUser().getUid().toString();
         reference = FirebaseDatabase.getInstance().getReference().child("posts");
         storageReference = FirebaseStorage.getInstance().getReference().child("posts_imgs");
-
-
 
         btnPhoto.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -87,21 +88,21 @@ public class NewPostActivity extends AppCompatActivity {
             }
         });
 
-        btnPost.setOnClickListener(new View.OnClickListener() {
+        btnVideo.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-
-                UploadToDatabase();
-
+            public void onClick(View v) {
+                Toast.makeText(NewPostActivity.this, "SOON !", Toast.LENGTH_SHORT).show();
             }
         });
 
-
+        btnPost.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                UploadToDatabase();
+            }
+        });
 
     }
-
-
-
 
     public void ShowDialog(){
         LayoutInflater inflater = getLayoutInflater();
@@ -110,18 +111,22 @@ public class NewPostActivity extends AppCompatActivity {
         Button btnCamera = (Button) view.findViewById(R.id.camera_img);
         Button btnGallery = (Button) view.findViewById(R.id.gallery_img);
 
+        btnCamera.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(NewPostActivity.this, "SOON !", Toast.LENGTH_SHORT).show();
+            }
+        });
+
         btnGallery.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 Intent i = new Intent();
                 i.setAction(Intent.ACTION_GET_CONTENT);
                 i.setType("image/*");
                 startActivityForResult(i , GALARY_REQUEST);
-
             }
         });
-
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage("")
@@ -137,19 +142,9 @@ public class NewPostActivity extends AppCompatActivity {
         pd.setMessage("Posting...");
         pd.show();
         if (imgUri != null) {
-
             String postText = txtPost.getText().toString();
-
-            if (TextUtils.isEmpty(postText) && imgUri == null){
-                pd.dismiss();
-                return;
-            }
-
             if (TextUtils.isEmpty(postText)){
                 postText = " ";
-            }
-            if (imgUri == null){
-                imgUri = Uri.parse("no img");
             }
 
             StorageReference file_path = storageReference.child(imgUri.getLastPathSegment());
@@ -158,68 +153,76 @@ public class NewPostActivity extends AppCompatActivity {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                     String downloadUri = taskSnapshot.getDownloadUrl().toString();
-
-                    DatabaseReference r = reference.push();
-                    r.child("name").setValue(MyData.name);
-                    r.child("userImg").setValue(MyData.img);
-                    r.child("desc").setValue(finalPostText);
-                    r.child("date").setValue(GetDate());
-                    r.child("postImg").setValue(downloadUri);
-
-
-                    pd.dismiss();
-
-                    startActivity(new Intent(NewPostActivity.this , MainActivity.class));
-                    finish();
-                }
-            });
-
-        }else{
-            final ProgressDialog pd1 = new ProgressDialog(this);
-            pd.setMessage("Posting...");
-            pd1.show();
-
-            String postText = txtPost.getText().toString();
-
-            if (TextUtils.isEmpty(postText) && imgUri == null){
-                pd1.dismiss();
-                return;
-            }
-
-            if (TextUtils.isEmpty(postText)){
-                postText = " ";
-            }
-
-            final String finalPostText = postText;
-
-                    DatabaseReference r = reference.push();
-                    r.child("name").setValue(MyData.name);
-                    r.child("userImg").setValue(MyData.img);
-                    r.child("desc").setValue(finalPostText);
-                    r.child("date").setValue(GetDate());
-                    r.child("postImg").setValue("").addOnCompleteListener(new OnCompleteListener<Void>() {
+                    Map map = new HashMap();
+                    map.put("uid", myData.getId());
+                    map.put("date", GetDate());
+                    map.put("desc", finalPostText);
+                    map.put("likes", "");
+                    map.put("name", myData.getName());
+                    map.put("postImg", downloadUri);
+                    map.put("userImg", myData.getImg());
+                    final DatabaseReference r = reference.push();
+                    r.setValue(map).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
-
+                            pd.dismiss();
                             if (task.isSuccessful()){
-                                pd1.dismiss();
-                                startActivity(new Intent(NewPostActivity.this , MainActivity.class));
-                                finish();
+                                reference.child(r.getKey()).child("likes").child("num").setValue("0").addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        startActivity(new Intent(NewPostActivity.this , MainActivity.class));
+                                        finish();
+                                    }
+                                });
+                            }else {
+                                Toast.makeText(NewPostActivity.this, "Failed to Post !", Toast.LENGTH_SHORT).show();
                             }
                         }
                     });
 
+                }
+            });
+
+        }else{
+            String postText = txtPost.getText().toString();
+            if (TextUtils.isEmpty(postText)){
+                pd.dismiss();
+                return;
+            }
+
+            final String finalPostText = postText;
+            Map map = new HashMap();
+            map.put("uid", myData.getId());
+            map.put("date", GetDate());
+            map.put("desc", finalPostText);
+            map.put("likes", "");
+            map.put("name", myData.getName());
+            map.put("postImg", "default");
+            map.put("userImg", myData.getImg());
+            final DatabaseReference r = reference.push();
+            r.setValue(map).addOnCompleteListener(new OnCompleteListener<Void>() {
+                @Override
+                public void onComplete(@NonNull Task<Void> task) {
+                    pd.dismiss();
+                    if (task.isSuccessful()){
+                        reference.child(r.getKey()).child("likes").child("num").setValue("0").addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                startActivity(new Intent(NewPostActivity.this , MainActivity.class));
+                                finish();
+                            }
+                        });
+                    }else {
+                        Toast.makeText(NewPostActivity.this, "Failed to Post !", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
 
 
         }
 
 
     }
-
-
-
-
-
 
 
     @Override
@@ -263,8 +266,5 @@ public class NewPostActivity extends AppCompatActivity {
 
 
     }
-
-
-
 
 }

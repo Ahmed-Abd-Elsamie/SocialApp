@@ -60,7 +60,11 @@ public class PostsRepo {
                         post.setPost_desc(snapshot.child("desc").getValue().toString());
                         post.setUser_img(snapshot.child("userImg").getValue().toString());
                         post.setDate(snapshot.child("date").getValue().toString());
-                        post.setLikes_num(snapshot.child("likes").child("num").getValue().toString());
+                        if (snapshot.child("likes").hasChild("num")){
+                            post.setLikes_num(snapshot.child("likes").child("num").getValue().toString());
+                        }else {
+                            post.setLikes_num("0");
+                        }
                         post.setId(snapshot.getKey());
                         post.setUid(snapshot.child("uid").getValue().toString());
                         if (snapshot.child("likes").child("actors").hasChild(id)){
@@ -100,7 +104,10 @@ public class PostsRepo {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (inc[0]){
-                    String num = dataSnapshot.child("likes").child("num").getValue().toString();
+                    String num = "0";
+                    if (dataSnapshot.child("likes").hasChild("num")){
+                        num = dataSnapshot.child("likes").child("num").getValue().toString();
+                    }
                     incrementLikes(num, post.getId());
                     inc[0] = false;
                 }

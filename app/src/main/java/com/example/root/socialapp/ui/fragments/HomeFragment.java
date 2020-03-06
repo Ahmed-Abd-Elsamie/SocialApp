@@ -17,8 +17,12 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
+import com.example.root.socialapp.MainActivity;
 import com.example.root.socialapp.R;
+import com.example.root.socialapp.models.User;
+import com.example.root.socialapp.ui.Login;
 import com.example.root.socialapp.ui.NewPostActivity;
 import com.example.root.socialapp.models.Post;
 import com.example.root.socialapp.adapters.PostAdapter;
@@ -26,8 +30,17 @@ import com.example.root.socialapp.viewmodels.HomeFragmentViewModel;
 
 import com.github.clans.fab.FloatingActionButton;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.onesignal.OneSignal;
 import com.orangegangsters.github.swipyrefreshlayout.library.SwipyRefreshLayout;
 import com.orangegangsters.github.swipyrefreshlayout.library.SwipyRefreshLayoutDirection;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -49,6 +62,10 @@ public class HomeFragment extends Fragment {
     private ProgressBar pb;
     private HomeFragmentViewModel homeFragmentViewModel;
     private PostAdapter adapter;
+    private User myData;
+    private FirebaseUser user;
+    private FirebaseAuth auth;
+    private DatabaseReference reference;
 
 
     public HomeFragment() {
@@ -152,14 +169,16 @@ public class HomeFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 // new Post
-                startActivity(new Intent(context , NewPostActivity.class));
+                Intent intent = new Intent(context, NewPostActivity.class);
+                intent.putExtra("user", myData);
+                startActivity(intent);
             }
         });
 
         fab2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                Toast.makeText(context, "SOON !", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -216,4 +235,30 @@ public class HomeFragment extends Fragment {
         pb.setVisibility(View.GONE);
     }
 
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        auth = FirebaseAuth.getInstance();
+        user = auth.getCurrentUser();
+        if(user == null){
+
+        }else {
+            myData = new User();
+            String uid = auth.getCurrentUser().getUid();
+            reference = FirebaseDatabase.getInstance().getReference().child("users").child(uid);
+            reference.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    myData = dataSnapshot.getValue(User.class);
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+
+        }
+    }
 }
