@@ -151,9 +151,9 @@ public class HomeFragment extends Fragment {
             public void onRefresh(SwipyRefreshLayoutDirection direction) {
                 num_item = num_item + 1;
                 recyclerView.refreshDrawableState();
-                //swipyRefreshLayout.setRefreshing(false);
                 homeFragmentViewModel.loadMorePosts(num_item);
                 //recyclerView.smoothScrollToPosition(num_item);
+                swipyRefreshLayout.setRefreshing(false);
             }
         });
 
