@@ -57,4 +57,6 @@ MVVM Pattern
 
 ## New Features to Add
 
-Social media Authentication(Facebook - Google - Twitter)
+1 -Social media Authentication(Facebook - Google - Twitter)
+<br/>
+2 - Share to social media
