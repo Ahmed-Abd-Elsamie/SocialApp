@@ -78,7 +78,6 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
             Commentlayout = (LinearLayout) view.findViewById(R.id.comment_layout);
         }
 
-
     }
 
     public PostAdapter(List<Post> list , Activity context) {
@@ -96,38 +95,44 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(final PostAdapter.ViewHolder holder, final int position) {
-
         final Post post = list.get(position);
+        holder.txtName.setText(post.getUser_name());
+        holder.txtDate.setText(post.getDate());
+        holder.txtTitle.setText("default");
+        holder.txtDesc.setText(post.getPost_desc());
+        Picasso.with(context).load(post.getUser_img()).into(holder.userImg);
+        Picasso.with(context).load(post.getPost_img()).into(holder.PostImg);
 
-            holder.txtName.setText(post.getUser_name());
-            holder.txtDate.setText(post.getDate());
-            holder.txtTitle.setText("default");
-            holder.txtDesc.setText(post.getPost_desc());
-            Picasso.with(context).load(post.getUser_img()).into(holder.userImg);
-            Picasso.with(context).load(post.getPost_img()).into(holder.PostImg);
+        homeFragmentViewModel = ViewModelProviders.of((FragmentActivity) context).get(HomeFragmentViewModel.class);
+        homeFragmentViewModel.init();
+        homeFragmentViewModel.checkLikes(post, holder.LikeBtn);
 
-            holder.PostImg.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    previewPostImage(post.getPost_img());
-                }
-            });
-
-            holder.LikeBtn.setText(post.getLikes_num());
-            if (post.isLiked()){
-                holder.LikeBtn.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_like_pressed,0,0,0);
-            }else {
-                holder.LikeBtn.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_like,0,0,0);
+        holder.PostImg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                previewPostImage(post.getPost_img());
             }
-            holder.LikeBtn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    //Toast.makeText(context, "SOON", Toast.LENGTH_SHORT).show();
-                    homeFragmentViewModel = ViewModelProviders.of((FragmentActivity) context).get(HomeFragmentViewModel.class);
-                    homeFragmentViewModel.likePost(post.getId());
-                }
-            });
+        });
 
+        holder.LikeBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (post.isLiked()){
+                    homeFragmentViewModel.setPostDisLike(post, 4);
+                    holder.LikeBtn.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_like,0,0,0);
+                    holder.LikeBtn.setText(Integer.parseInt(holder.LikeBtn.getText().toString()) - 1 + "");
+                    post.setLiked(false);
+                    post.setLikes_num(Integer.parseInt(holder.LikeBtn.getText().toString()) + "");
+                }else {
+                    homeFragmentViewModel.setPostLike(post, 4);
+                    holder.LikeBtn.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_like_pressed,0,0,0);
+                    holder.LikeBtn.setText(Integer.parseInt(holder.LikeBtn.getText().toString()) + 1 + "");
+                    post.setLiked(true);
+                    post.setLikes_num(Integer.parseInt(holder.LikeBtn.getText().toString()) + "");
+                }
+
+            }
+        });
 
         holder.CommentBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -138,11 +143,9 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
             }
         });
 
-
         holder.ShareBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 PopupMenu popupMenu = new PopupMenu(context , holder.ShareBtn);
                 popupMenu.getMenuInflater().inflate(R.menu.share_menu , popupMenu.getMenu());
                 popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
@@ -156,10 +159,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
             }
         });
 
-
-
     }
-
 
     private void previewPostImage(String img_url) {
         Dialog dialog = new Dialog(context);

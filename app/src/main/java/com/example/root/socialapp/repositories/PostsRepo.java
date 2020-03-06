@@ -4,6 +4,7 @@ import android.arch.lifecycle.MutableLiveData;
 
 import com.example.root.socialapp.models.Comment;
 import com.example.root.socialapp.models.Post;
+import com.example.root.socialapp.models.User;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -87,6 +88,66 @@ public class PostsRepo {
             }
         });
 
+    }
+
+    public void sendPostLike(final Post post){
+        reference = FirebaseDatabase.getInstance().getReference().child("posts").child(post.getId());
+        auth = FirebaseAuth.getInstance();
+        final String id = auth.getCurrentUser().getUid();
+        reference.child("likes").child("actors").child(id).setValue("like");
+        final boolean[] inc = {true};
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (inc[0]){
+                    String num = dataSnapshot.child("likes").child("num").getValue().toString();
+                    incrementLikes(num, post.getId());
+                    inc[0] = false;
+                }
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    public void sendPostDisLike(final Post post){
+        reference = FirebaseDatabase.getInstance().getReference().child("posts").child(post.getId());
+        auth = FirebaseAuth.getInstance();
+        final String id = auth.getCurrentUser().getUid();
+        reference.child("likes").child("actors").child(id).removeValue();
+        final boolean[] inc = {true};
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (inc[0]){
+                    String num = dataSnapshot.child("likes").child("num").getValue().toString();
+                    decrementLikes(num, post.getId());
+                    inc[0] = false;
+                }
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    private void incrementLikes(String likes, String postId) {
+        int num = Integer.parseInt(likes) + 1;
+        reference = FirebaseDatabase.getInstance().getReference().child("posts").child(postId).child("likes");
+        reference.child("num").setValue(num + "");
+    }
+
+    private void decrementLikes(String likes, String postId) {
+        int num = Integer.parseInt(likes) - 1;
+        reference = FirebaseDatabase.getInstance().getReference().child("posts").child(postId).child("likes");
+        reference.child("num").setValue(num + "");
     }
 
 }
