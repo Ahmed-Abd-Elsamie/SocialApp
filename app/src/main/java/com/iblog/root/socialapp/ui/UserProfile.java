@@ -162,6 +162,9 @@ public class UserProfile extends AppCompatActivity {
         txtInfoEmail.setText(user.getEmail());
         txtName.setText(user.getName());
         // Check if this is my profile or not
+        if (friend){
+            fabEditSkills.setVisibility(View.GONE);
+        }
         if(id.equals(user.getId()) || friend){
             btnConnect.setVisibility(View.GONE);
         }else {

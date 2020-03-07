@@ -10,7 +10,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:837811252277:android:b943eb20707fa738",
         "android_client_info": {
-          "package_name": "com.example.root.codegiest"
+          "package_name": "com.iblog.root.codegiest"
         }
       },
       "oauth_client": [
@@ -18,7 +18,7 @@
           "client_id": "837811252277-gavr8m1lpm2k45354d9rds8bj2e3qjla.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.example.root.codegiest",
+            "package_name": "com.iblog.root.codegiest",
             "certificate_hash": "ea7f7d36797a5a13e02d9d5b87f2c1786d2462bc"
           }
         },
@@ -54,7 +54,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:837811252277:android:f2537247486ce69a",
         "android_client_info": {
-          "package_name": "com.example.root.socialapp"
+          "package_name": "com.iblog.root.socialapp"
         }
       },
       "oauth_client": [
@@ -62,7 +62,7 @@
           "client_id": "837811252277-s25fuhadtbcuo7qpn45ohc79h3o84skj.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.example.root.socialapp",
+            "package_name": "com.iblog.root.socialapp",
             "certificate_hash": "ea7f7d36797a5a13e02d9d5b87f2c1786d2462bc"
           }
         },
