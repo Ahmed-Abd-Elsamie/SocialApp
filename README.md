@@ -60,3 +60,5 @@ MVVM Pattern
 1 -Social media Authentication(Facebook - Google - Twitter)
 <br/>
 2 - Share to social media
+<br/>
+3 - Create Local Database to store user data
