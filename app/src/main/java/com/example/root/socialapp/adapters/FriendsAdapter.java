@@ -49,6 +49,7 @@ public class FriendsAdapter extends UsersAdapter {
             public void onClick(View v) {
                 Intent intent = new Intent(context, UserProfile.class);
                 intent.putExtra("user", user);
+                intent.putExtra("friend", true);
                 context.startActivity(intent);
             }
         });

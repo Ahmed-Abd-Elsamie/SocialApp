@@ -77,6 +77,7 @@ public class UserProfile extends AppCompatActivity {
     private String id;
     private User user;
     private UsersViewModel usersViewModel;
+    private boolean friend = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,6 +92,7 @@ public class UserProfile extends AppCompatActivity {
 
         Intent intent = getIntent();
         user = intent.getParcelableExtra("user");
+        friend = intent.getBooleanExtra("friend", false);
 
         // init Firebase
         auth = FirebaseAuth.getInstance();
@@ -165,7 +167,7 @@ public class UserProfile extends AppCompatActivity {
         txtInfoEmail.setText(user.getEmail());
         txtName.setText(user.getName());
         // Check if this is my profile or not
-        if(id.equals(user.getId())){
+        if(id.equals(user.getId()) || friend){
             btnConnect.setVisibility(View.GONE);
         }else {
             fabEditSkills.setVisibility(View.GONE);

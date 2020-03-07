@@ -107,6 +107,7 @@ public class UsersAdapter  extends RecyclerView.Adapter<UsersAdapter.ViewHolder>
             public void onClick(View v) {
                 Intent intent = new Intent(context, UserProfile.class);
                 intent.putExtra("user", user);
+                intent.putExtra("friend", false);
                 context.startActivity(intent);
             }
         });
