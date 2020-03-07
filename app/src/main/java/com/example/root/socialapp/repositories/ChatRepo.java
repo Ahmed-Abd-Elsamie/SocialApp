@@ -34,8 +34,8 @@ public class ChatRepo {
         auth = FirebaseAuth.getInstance();
         id = auth.getCurrentUser().getUid();
         Firebase.setAndroidContext(context);
-        firebase1 = new Firebase("https://uuuuuuudb.firebaseio.com/messages/" + id + "-" + user.getId());
-        firebase2 = new Firebase("https://uuuuuuudb.firebaseio.com/messages/" + user.getId() + "-" + id);
+        firebase1 = new Firebase("https://codegiest.firebaseio.com/messages/" + id + "-" + user.getId());
+        firebase2 = new Firebase("https://codegiest.firebaseio.com/messages/" + user.getId() + "-" + id);
     }
     public void getAllMessages(final LinearLayout layout, final ScrollView scrollView){
         firebase1.addChildEventListener(new ChildEventListener() {
