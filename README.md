@@ -46,6 +46,8 @@ MVVM Pattern
 </br>
 7 - MVVM Designe Pattern
 </br>
+8 - Realtime Chat
+</br>
 
 
 ## Bugs to Fix
