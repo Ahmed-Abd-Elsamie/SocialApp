@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.support.annotation.Nullable;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -61,7 +62,8 @@ public class CommentsActivity extends AppCompatActivity {
     private TextView txtPostDate;
     private TextView txtPostDesc;
     private ImageButton btnShareMenu;
-    private Button btnSharePost;
+    //private Button btnLike;
+    //private Button btnSharePost;
     private ImageButton btnBack;
 
     private RecyclerView recyclerView;
@@ -69,6 +71,7 @@ public class CommentsActivity extends AppCompatActivity {
     private CommentsViewModel commentsViewModel;
     private CommentsAdapter adapter;
     private Post post;
+    private HomeFragmentViewModel homeFragmentViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,9 +91,17 @@ public class CommentsActivity extends AppCompatActivity {
         Picasso.with(this).load(post.getUser_img()).into(Myimg);
         Picasso.with(this).load(post.getPost_img()).into(postImg);
         Picasso.with(this).load(post.getUser_img()).into(postUserImg);
+  //      btnLike.setText(post.getLikes_num());
 
+       /* if (post.isLiked()){
+            btnLike.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_like_pressed,0,0,0);
+        }else {
+            btnLike.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_like,0,0,0);
+        }
+*/
         commentsViewModel = ViewModelProviders.of(this).get(CommentsViewModel.class);
         commentsViewModel.init(post.getId());
+
 /*
         commentsViewModel.getComments().observe(this, new Observer<List<Comment>>() {
             @Override
@@ -131,7 +142,7 @@ public class CommentsActivity extends AppCompatActivity {
             }
         });
 
-        btnSharePost.setOnClickListener(new View.OnClickListener() {
+        /*btnSharePost.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 PopupMenu popupMenu = new PopupMenu(CommentsActivity.this , btnShareMenu);
@@ -145,7 +156,7 @@ public class CommentsActivity extends AppCompatActivity {
                 });
                 popupMenu.show();
             }
-        });
+        });*/
 
         btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -169,6 +180,27 @@ public class CommentsActivity extends AppCompatActivity {
 
             }
         });
+
+        /*btnLike.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (post.isLiked()){
+                    homeFragmentViewModel.setPostDisLike(post, 4);
+                    btnLike.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_like,0,0,0);
+                    btnLike.setText(Integer.parseInt(btnLike.getText().toString()) - 1 + "");
+                    post.setLiked(false);
+                    post.setLikes_num(Integer.parseInt(btnLike.getText().toString()) + "");
+                }else {
+                    homeFragmentViewModel.setPostLike(post, 4);
+                    btnLike.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_like_pressed,0,0,0);
+                    btnLike.setText(Integer.parseInt(btnLike.getText().toString()) + 1 + "");
+                    post.setLiked(true);
+                    post.setLikes_num(Integer.parseInt(btnLike.getText().toString()) + "");
+                }
+            }
+        });
+
+         */
         // init firebase
         /*
         reference = FirebaseDatabase.getInstance().getReference().child("comments").child(post.getId());
@@ -259,8 +291,9 @@ public class CommentsActivity extends AppCompatActivity {
         txtPostDesc = (TextView) findViewById(R.id.post_desc_comment_post);
         btnShareMenu = (ImageButton) findViewById(R.id.btn_share_menu);
         btnBack = (ImageButton) findViewById(R.id.btn_back_menu);
-        btnSharePost = (Button) findViewById(R.id.btn_share);
+        //btnSharePost = (Button) findViewById(R.id.btn_share);
         pb = findViewById(R.id.pro);
+        //btnLike = findViewById(R.id.btn_like);
     }
 
 

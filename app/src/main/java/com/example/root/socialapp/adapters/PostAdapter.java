@@ -47,6 +47,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         public TextView txtTitle;
         public TextView txtDesc;
         public TextView txtComment;
+        public TextView txtMore;
         public CircleImageView userImg;
         public ImageView PostImg;
         public Button LikeBtn;
@@ -66,6 +67,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
             txtDate = (TextView) view.findViewById(R.id.post_date);
             txtDesc = (TextView) view.findViewById(R.id.post_desc);
             txtTitle = (TextView) view.findViewById(R.id.user_title);
+            txtMore = view.findViewById(R.id.txt_more);
             txtComment = (TextView) view.findViewById(R.id.post_likes_comments);
             userImg = (CircleImageView) view.findViewById(R.id.user_img);
             PostImg = (ImageView) view.findViewById(R.id.post_img);
@@ -99,13 +101,19 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         holder.txtName.setText(post.getUser_name());
         holder.txtDate.setText(post.getDate());
         holder.txtTitle.setText("default");
-        holder.txtDesc.setText(post.getPost_desc());
+
         Picasso.with(context).load(post.getUser_img()).into(holder.userImg);
         Picasso.with(context).load(post.getPost_img()).into(holder.PostImg);
 
         homeFragmentViewModel = ViewModelProviders.of((FragmentActivity) context).get(HomeFragmentViewModel.class);
         homeFragmentViewModel.init();
         homeFragmentViewModel.checkLikes(post, holder.LikeBtn);
+
+        if (post.getPost_desc().length() > 150){
+            holder.txtDesc.setText(post.getPost_desc().substring(0, 130));
+        }else {
+            holder.txtDesc.setText(post.getPost_desc());
+        }
 
         holder.PostImg.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -135,6 +143,15 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         });
 
         holder.CommentBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(context, CommentsActivity.class);
+                intent.putExtra("post", post);
+                context.startActivity(intent);
+            }
+        });
+
+        holder.txtMore.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(context, CommentsActivity.class);
