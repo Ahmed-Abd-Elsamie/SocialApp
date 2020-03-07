@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
 
-    tools:context="com.example.root.socialapp.ui.CommentsActivity">
+    tools:context="com.iblog.root.socialapp.ui.CommentsActivity">
 
 
     <LinearLayout

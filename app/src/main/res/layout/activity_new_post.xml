@@ -7,7 +7,7 @@
     android:orientation="vertical"
     android:background="#fff"
 
-    tools:context="com.example.root.socialapp.ui.NewPostActivity">
+    tools:context="com.iblog.root.socialapp.ui.NewPostActivity">
 
     <LinearLayout
         android:layout_width="match_parent"

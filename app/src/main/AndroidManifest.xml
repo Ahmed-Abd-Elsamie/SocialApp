@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.root.socialapp">
+    package="com.iblog.root.socialapp">
 
     <uses-permission android:name="android.permission.INTERNET" />
 
@@ -21,7 +21,7 @@
                 android:resource="@xml/provider_paths" />
         </provider>
 
-        <activity android:name=".MainActivity"
+        <activity android:name="com.iblog.root.socialapp.MainActivity"
             android:windowSoftInputMode="stateAlwaysHidden">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -29,16 +29,16 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.Login" />
-        <activity android:name=".ui.Register" />
-        <activity android:name=".ui.AllFriends" />
+        <activity android:name="com.iblog.root.socialapp.ui.Login" />
+        <activity android:name="com.iblog.root.socialapp.ui.Register" />
+        <activity android:name="com.iblog.root.socialapp.ui.AllFriends" />
         <activity
-            android:name=".ui.UserProfile"
+            android:name="com.iblog.root.socialapp.ui.UserProfile"
             android:label="@string/title_activity_user_profile"
             android:theme="@style/AppTheme" />
-        <activity android:name=".ui.Chat" />
-        <activity android:name=".ui.NewPostActivity" />
-        <activity android:name=".ui.CommentsActivity"></activity>
+        <activity android:name="com.iblog.root.socialapp.ui.Chat" />
+        <activity android:name="com.iblog.root.socialapp.ui.NewPostActivity" />
+        <activity android:name="com.iblog.root.socialapp.ui.CommentsActivity"></activity>
     </application>
 
 </manifest>
